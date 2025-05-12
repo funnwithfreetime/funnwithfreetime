@@ -3,261 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FunWithFreeTime - Spend $100 Billion!</title>
+    <title>FunWithFreeTime - Spend Elon's $100 Billion!</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
         }
-        .balance-card {
-            background: linear-gradient(to right, #00b09b, #96c93d);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 176, 155, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(0, 176, 155, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 176, 155, 0); }
-        }
-        .item-card {
+        
+        .purchase-btn {
             transition: all 0.3s ease;
         }
-        .item-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .buy-button {
-            transition: all 0.2s ease;
-        }
-        .buy-button:hover {
+        
+        .purchase-btn:hover {
             transform: scale(1.05);
         }
-        .buy-button:active {
-            transform: scale(0.95);
+        
+        .item-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
         }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
         .purchased {
+            opacity: 0.7;
+        }
+        
+        .money-counter {
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+        }
+        
+        .category-title {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .category-title::after {
+            content: '';
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #FF5722;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            transform: rotate(15deg);
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #f87171, #3b82f6);
+            border-radius: 2px;
         }
-        .empty-wallet {
-            background: linear-gradient(to right, #f85032, #e73827);
+        
+        .purchase-animation {
+            animation: purchase-pulse 0.5s ease;
         }
-        .footer {
-            background: rgba(0, 0, 0, 0.8);
+        
+        @keyframes purchase-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            border-radius: 50%;
-            animation: fall linear forwards;
-            pointer-events: none;
-            z-index: 1000;
+        
+        .cart-item {
+            animation: slide-in 0.3s ease;
         }
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
+        
+        @keyframes slide-in {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .balance-flash {
+            animation: balance-update 0.6s ease;
+        }
+        
+        @keyframes balance-update {
+            0% { color: #ef4444; }
+            100% { color: #1f2937; }
+        }
+        
+        /* Custom scrollbar */
+        .cart-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .cart-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .cart-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        
+        .cart-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .grid-cols-3 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .grid-cols-3, .grid-cols-2 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
             }
         }
     </style>
 </head>
-<body class="antialiased">
-    <div class="container mx-auto px-4 py-8">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4 text-gray-800">
-                Fun<span class="text-green-500">With</span>FreeTime
-            </h1>
-            <p class="text-xl text-gray-600">What would you do with $100 billion?</p>
-        </header>
-
-        <div class="balance-card p-6 rounded-xl text-white text-center mb-10 sticky top-0 z-10">
-            <h2 class="text-2xl font-bold">Your Balance</h2>
-            <p id="balance" class="text-4xl md:text-5xl font-bold mt-2">$100,000,000,000</p>
+<body class="min-h-screen">
+    <div class="sticky top-0 z-50 bg-gradient-to-r from-blue-500 to-indigo-600 p-4 shadow-lg">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-white text-2xl md:text-3xl font-bold mb-2 md:mb-0">FunWithFreeTime</h1>
+            <div class="flex flex-col items-center md:items-end">
+                <p class="text-white text-sm">Spending Elon Musk's Money</p>
+                <div class="flex items-center bg-white rounded-lg px-4 py-2 shadow-inner mt-2">
+                    <i class="fas fa-dollar-sign text-green-600 mr-2"></i>
+                    <span id="balance" class="money-counter text-xl md:text-2xl text-gray-800">100,000,000,000</span>
+                </div>
+            </div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            <!-- Item cards will be dynamically inserted here -->
-        </div>
-
-        <footer class="footer text-white text-center p-4 rounded-lg mt-10">
-            <p class="text-lg italic">Made with free time and too much imagination</p>
-        </footer>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let balance = 100000000000;
-            const purchasedItems = {};
-
-            const items = [
-                { name: 'Cup of Coffee', price: 4, icon: 'fa-mug-hot', color: 'bg-yellow-600' },
-                { name: 'Burger and Fries', price: 15, icon: 'fa-hamburger', color: 'bg-red-500' },
-                { name: 'Movie Ticket', price: 20, icon: 'fa-film', color: 'bg-blue-600' },
-                { name: 'Video Game', price: 60, icon: 'fa-gamepad', color: 'bg-purple-600' },
-                { name: 'Nice Dinner', price: 200, icon: 'fa-utensils', color: 'bg-pink-600' },
-                { name: 'iPhone', price: 999, icon: 'fa-mobile-alt', color: 'bg-gray-800' },
-                { name: 'Gaming PC', price: 3000, icon: 'fa-desktop', color: 'bg-indigo-600' },
-                { name: 'Luxury Watch', price: 25000, icon: 'fa-clock', color: 'bg-yellow-400' },
-                { name: 'Tesla Model S', price: 90000, icon: 'fa-car', color: 'bg-red-700' },
-                { name: 'Luxury Car', price: 250000, icon: 'fa-car-side', color: 'bg-blue-800' },
-                { name: 'House', price: 1000000, icon: 'fa-home', color: 'bg-green-700' },
-                { name: 'Luxury Mansion', price: 5000000, icon: 'fa-home', color: 'bg-green-900' },
-                { name: 'Private Jet', price: 65000000, icon: 'fa-plane', color: 'bg-blue-500' },
-                { name: 'Private Island', price: 100000000, icon: 'fa-umbrella-beach', color: 'bg-yellow-300' },
-                { name: 'Super Yacht', price: 500000000, icon: 'fa-ship', color: 'bg-blue-300' },
-                { name: 'Hollywood Movie Production', price: 1000000000, icon: 'fa-video', color: 'bg-purple-500' },
-                { name: 'Sports Team', price: 2500000000, icon: 'fa-futbol', color: 'bg-green-500' },
-                { name: 'Space Exploration Program', price: 10000000000, icon: 'fa-rocket', color: 'bg-indigo-800' },
-                { name: 'End World Hunger', price: 25000000000, icon: 'fa-bread-slice', color: 'bg-orange-500' },
-                { name: 'Fix Climate Change', price: 50000000000, icon: 'fa-leaf', color: 'bg-green-400' }
-            ];
-
-            // Format currency function
-            function formatCurrency(amount) {
-                if (amount >= 1000000000) {
-                    return `$${(amount / 1000000000).toFixed(2)} billion`;
-                } else if (amount >= 1000000) {
-                    return `$${(amount / 1000000).toFixed(2)} million`;
-                } else if (amount >= 1000) {
-                    return `$${(amount / 1000).toFixed(2)}k`;
-                } else {
-                    return `$${amount.toFixed(2)}`;
-                }
-            }
-
-            // Update balance display
-            function updateBalance() {
-                const balanceElement = document.getElementById('balance');
-                balanceElement.textContent = formatCurrency(balance);
-                
-                const balanceCard = document.querySelector('.balance-card');
-                if (balance <= 0) {
-                    balanceCard.classList.add('empty-wallet');
-                    balanceCard.classList.remove('balance-card');
-                    balanceCard.style.animation = 'none';
-                }
-            }
-
-            // Create confetti effect
-            function createConfetti(x, y) {
-                const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f'];
-                
-                for (let i = 0; i < 50; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = `${x}px`;
-                    confetti.style.top = `${y}px`;
-                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.width = `${Math.random() * 10 + 5}px`;
-                    confetti.style.height = `${Math.random() * 10 + 5}px`;
-                    confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                    
-                    // Random horizontal drift
-                    const xVelocity = (Math.random() - 0.5) * 200;
-                    confetti.style.animationName = 'none';
-                    confetti.style.transform = 'translateY(0) translateX(0)';
-                    
-                    document.body.appendChild(confetti);
-                    
-                    // Force reflow
-                    void confetti.offsetWidth;
-                    
-                    confetti.style.transition = `transform ${Math.random() * 3 + 2}s linear`;
-                    confetti.style.transform = `translateY(100vh) translateX(${xVelocity}px) rotate(${Math.random() * 360}deg)`;
-                    
-                    // Remove after animation
-                    setTimeout(() => {
-                        confetti.remove();
-                    }, 5000);
-                }
-            }
-
-            // Handle purchase
-            function buyItem(item, buttonElement, cardElement) {
-                if (balance >= item.price) {
-                    const rect = buttonElement.getBoundingClientRect();
-                    const x = rect.left + rect.width / 2;
-                    const y = rect.top + rect.height / 2;
-                    
-                    balance -= item.price;
-                    updateBalance();
-                    
-                    // Update purchase count
-                    if (purchasedItems[item.name]) {
-                        purchasedItems[item.name]++;
-                    } else {
-                        purchasedItems[item.name] = 1;
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Items Section -->
+            <div class="w-full md:w-2/3">
+                <!-- Everyday Items -->
+                <section class="mb-10">
+                    <h2 class="category-title text-2xl font-bold text-gray-800 mb-6">Everyday Items</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-red-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-coffee text-red-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Cup of Coffee</h3>
+                                <p class="text-gray-600 mb-3">Your daily dose of energy</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$4</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Cup of Coffee', 4)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         
-                        // Add purchased badge on first purchase
-                        const badge = document.createElement('div');
-                        badge.className = 'purchased';
-                        badge.textContent = 'PURCHASED';
-                        cardElement.appendChild(badge);
-                    }
-                    
-                    // Update count display
-                    const countDisplay = cardElement.querySelector('.purchase-count');
-                    if (countDisplay) {
-                        countDisplay.textContent = `Owned: ${purchasedItems[item.name]}`;
-                        countDisplay.classList.remove('hidden');
-                    }
-                    
-                    // Confetti effect
-                    createConfetti(x, y);
-                    
-                    // Button animation
-                    buttonElement.classList.add('bg-green-700');
-                    setTimeout(() => {
-                        buttonElement.classList.remove('bg-green-700');
-                    }, 300);
-                } else {
-                    alert("You don't have enough money for this purchase!");
-                    buttonElement.classList.add('bg-red-700');
-                    setTimeout(() => {
-                        buttonElement.classList.remove('bg-red-700');
-                    }, 300);
-                }
-            }
-
-            // Generate item cards
-            const container = document.querySelector('.grid');
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'item-card bg-white rounded-xl shadow-lg overflow-hidden relative';
-                
-                // Format price for display
-                const displayPrice = formatCurrency(item.price);
-                
-                card.innerHTML = `
-                    <div class="${item.color} text-white p-6 flex items-center justify-center">
-                        <i class="fas ${item.icon} text-4xl"></i>
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-yellow-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-ticket-alt text-yellow-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Movie Ticket</h3>
+                                <p class="text-gray-600 mb-3">Enjoy the latest blockbuster</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$15</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Movie Ticket', 15)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-book text-purple-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Book</h3>
+                                <p class="text-gray-600 mb-3">Knowledge is power</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$20</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Book', 20)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-green-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-utensils text-green-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Fancy Dinner</h3>
+                                <p class="text-gray-600 mb-3">Treat yourself to a gourmet meal</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$200</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Fancy Dinner', 200)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-gray-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-mobile-alt text-gray-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">iPhone</h3>
+                                <p class="text-gray-600 mb-3">The latest model, of course</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$999</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('iPhone', 999)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-tshirt text-blue-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Designer Wardrobe</h3>
+                                <p class="text-gray-600 mb-3">Outfit yourself in luxury</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$50,000</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Designer Wardrobe', 50000)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">${item.name}</h3>
-                        <p class="text-gray-700 font-bold mb-4">${displayPrice}</p>
-                        <p class="purchase-count text-sm text-gray-500 mb-4 hidden">Owned: 0</p>
-                        <button class="buy-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full">
-                            Buy Now
-                        </button>
+                </section>
+                
+                <!-- Luxury Items -->
+                <section class="mb-10">
+                    <h2 class="category-title text-2xl font-bold text-gray-800 mb-6">Luxury Items</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-red-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-car text-red-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Luxury Car</h3>
+                                <p class="text-gray-600 mb-3">Turn heads on the road</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$250,000</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Luxury Car', 250000)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-yellow-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-home text-yellow-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">House in Suburbs</h3>
+                                <p class="text-gray-600 mb-3">A nice place to call home</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$500,000</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('House in Suburbs', 500000)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-indigo-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-building text-indigo-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Mansion</h3>
+                                <p class="text-gray-600 mb-3">Live like royalty</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$5,000,000</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Mansion', 5000000)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-green-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-plane text-green-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Private Jet</h3>
+                                <p class="text-gray-600 mb-3">Travel in style</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$65,000,000</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Private Jet', 65000000)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-umbrella-beach text-blue-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Private Island</h3>
+                                <p class="text-gray-600 mb-3">Your own paradise</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$100,000,000</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Private Island', 100000000)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                `;
+                </section>
                 
-                const buyButton = card.querySelector('.buy-button');
-                buyButton.addEventListener('click', () => buyItem(item, buyButton, card));
-                
-                container.appendChild(card);
-            });
-        });
-    </script>
-</body>
-</html>
+                <!-- Extravagant Items -->
+                <section class="mb-10">
+                    <h2 class="category-title text-2xl font-bold text-gray-800 mb-6">Extravagant Expenditures</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-orange-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-basketball-ball text-orange-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Sports Team</h3>
+                                <p class="text-gray-600 mb-3">Own your favorite franchise</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$2,500,000,000</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Sports Team', 2500000000)">
+                                        Buy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card bg-white shadow-md">
+                            <div class="p-4">
+                                <div class="h-40 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
+                                    <i class="fas fa-rocket text-purple-500 text-5xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg mb-1">Space Mission</h3>
+                                <p class="text-gray-600 mb-3">Reach for the stars</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-green-600">$10,000,000,000</span>
+                                    <button class="purchase-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                                            onclick="buyItem('Space Mission', 10000000000)">
+                                        Buy
+                                    </button>
+                                </
