@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FunWithFreeTime: Spend $100 Billion!</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f9ff;
+            transition: background-color 0.5s ease;
+        }
+        
+        .money-counter {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #047857;
+            transition: all 0.3s ease;
+        }
+        
+        .money-counter.spending {
+            color: #b91c1c;
+            transform: scale(1.05);
+        }
+        
+        .item-card {
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .buy-button {
+            transition: all 0.2s ease;
+        }
+        
+        .buy-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .buy-button:active {
+            transform: scale(0.95);
+        }
+        
+        .category-tab {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-tab.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e5e7eb;
+            border-radius: 5px;
+            margin-top: 8px;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #3b82f6;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            pointer-events: none;
+            opacity: 0;
+            animation: confetti-fall 4s ease forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .count-animation {
+            animation: count 0.5s ease-out;
+        }
+        
+        @keyframes count {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        #notification {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            transition: bottom 0.5s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .achievement {
+            display: none;
+            animation: slide-in 0.5s ease forwards;
+        }
+        
+        @keyframes slide-in {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        #cart-items {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-600 mb-2">FunWithFreeTime</h1>
+            <h2 class="text-2xl md:text-3xl font-semibold text-gray-700">Spend $100 Billion!</h2>
+            <p class="text-gray-600 mt-2">Ever wondered what it feels like to have billionaire money? Let's find out!</p>
+        </header>
+
+        <!-- Money Counter -->
+        <div class="bg-white rounded-xl p-4 md:p-6 shadow-lg text-center mb-8">
+            <h3 class="text-xl text-gray-700 mb-2">Your Remaining Fortune:</h3>
+            <div id="money-counter" class="money-counter">$100,000,000,000</div>
+            <div class="progress-bar">
+                <div id="money-progress" class="progress"></div>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">Spent: <span id="spent-amount">$0</span> (<span id="spent-percentage">0%</span>)</p>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex overflow-x-auto pb-2 mb-6 scrollbar-hide">
+            <div class="category-tab active py-2 px-4 mx-1 rounded-lg bg-indigo-100 text-indigo-600 whitespace-nowrap" data-category="everyday">Everyday Items</div>
+            <div class="category-tab py-2 px-4 mx-1 rounded-lg bg-indigo-100 text-indigo-600 whitespace-nowrap" data-category="luxury">Luxury Items</div>
+            <div class="category-tab py-2 px-4 mx-1 rounded-lg bg-indigo-100 text-indigo-600 whitespace-nowrap" data-category="extravagant">Extravagant Purchases</div>
+            <div class="category-tab py-2 px-4 mx-1 rounded-lg bg-indigo-100 text-indigo-600 whitespace-nowrap" data-category="world">World-Scale Items</div>
+            <div class="category-tab py-2 px-4 mx-1 rounded-lg bg-indigo-100 text-indigo-600 whitespace-nowrap" data-category="cart">Your Cart</div>
+        </div>
+
+        <!-- Items Display -->
+        <div id="items-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            <!-- Items will be added here dynamically -->
+        </div>
+        
+        <!-- Cart Section -->
+        <div id="cart-section" class="hidden bg-white rounded-xl p-6 shadow-lg mb-8">
+            <h3 class="text-2xl font-bold text-gray-700 mb-4">Your Shopping Cart</h3>
+            <div id="cart-items" class="space-y-3 mb-4">
+                <!-- Cart items will be added here -->
+                <p id="empty-cart-message" class="text-gray-500 italic">Your cart is empty. Start spending!</p>
+            </div>
+            <div class="border-t pt-4">
+                <p class="text-xl font-semibold">Total Spent: <span id="cart-total" class="text-indigo-600">$0</span></p>
+            </div>
+        </div>
+        
+        <!-- Achievements Section -->
+        <div class="bg-white rounded-xl p-6 shadow-lg mb-8">
+            <h3 class="text-2xl font-bold text-gray-700 mb-4">Your Achievements</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div id="achievement-1" class="achievement bg-gray-100 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="text-yellow-500 text-2xl mr-2"><i class="fas fa-trophy"></i></span>
+                        <span class="font-semibold">Big Spender</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Spent your first billion dollars!</p>
+                </div>
+                <div id="achievement-2" class="achievement bg-gray-100 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="text-yellow-500 text-2xl mr-2"><i class="fas fa-trophy"></i></span>
+                        <span class="font-semibold">Shopping Spree</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Purchased 10 different items</p>
+                </div>
+                <div id="achievement-3" class="achievement bg-gray-100 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="text-yellow-500 text-2xl mr-2"><i class="fas fa-trophy"></i></span>
+                        <span class="font-semibold">Halfway There</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Spent 50% of your fortune</p>
+                </div>
+                <div id="achievement-4" class="achievement bg-gray-100 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="text-yellow-500 text-2xl mr-2"><i class="fas fa-trophy"></i></span>
+                        <span class="font-semibold">Category Master</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Bought from all categories</p>
+                </div>
+                <div id="achievement-5" class="achievement bg-gray-100 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="text-yellow-500 text-2xl mr-2"><i class="fas fa-trophy"></i></span>
+                        <span class="font-semibold">World Changer</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Spent on a world-scale item</p>
+                </div>
+                <div id="achievement-6" class="achievement bg-gray-100 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="text-yellow-500 text-2xl mr-2"><i class="fas fa-trophy"></i></span>
+                        <span class="font-semibold">Billionaire No More</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Spent at least 99% of your money</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fun Facts -->
+        <div class="bg-white rounded-xl p-6 shadow-lg mb-8">
+            <h3 class="text-2xl font-bold text-gray-700 mb-4">Fun Billionaire Facts</h3>
+            <div class="space-y-4">
+                <p class="text-gray-600"><span class="font-semibold text-indigo-600">Did you know?</span> If you spent $1 million every day, it would take you over 274 years to spend $100 billion!</p>
+                <p class="text-gray-600"><span class="font-semibold text-indigo-600">Amazing fact:</span> $100 billion in $100 bills would weigh approximately 1,000 tons!</p>
+                <p class="text-gray-600"><span class="font-semibold text-indigo-600">Perspective:</span> If you earned $5,000 per day, it would take you over 54,000 years to earn $100 billion.</p>
+            </div>
+        </div>
+        
+        <!-- Reset Button -->
+        <div class="text-center mb-8">
+            <button id="reset-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                Start Over
+            </button>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-indigo-600 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-lg">Made with free time and too much imagination</p>
+            <p class="text-sm mt-2">No real billions were harmed in the making of this website</p>
+        </div>
+    </footer>
+    
+    <!-- Notification Element -->
+    <div id="notification" class="hidden">You just purchased something!</div>
+    
+    <script>
+        // Initial variables
+        let balance = 100000000000; // $100 billion
+        const initialBalance = balance;
+        let cartItems = [];
+        let purchasedCategories = new Set();
+        let itemsPurchased = 0;
+        let achievements = {
+            'achievement-1': false, // Big Spender
+            'achievement-2': false, // Shopping Spree
+            'achievement-3': false, // Halfway There
+            'achievement-4': false, // Category Master
+            'achievement-5': false, // World Changer
+            'achievement-6': false  // Billionaire No More
+        };
+        
+        // Item data
+        const items = {
+            everyday: [
+                { id: 'coffee', name: 'Cup of Coffee', price: 5, description: 'A delicious cup of premium coffee. You\'ll need about 20 billion of these to spend all your money.', icon: 'fas fa-coffee' },
+                { id: 'pizza', name: 'Large Pizza', price: 20, description: 'A large pepperoni pizza. At this rate, you could buy 5 billion pizzas!', icon: 'fas fa-pizza-slice' },
+                { id: 'shoes', name: 'Designer Shoes', price: 1000, description: 'Premium designer shoes. You could buy a new pair every day for 273,972 years!', icon: 'fas fa-shoe-prints' },
+                { id: 'smartphone', name: 'Latest Smartphone', price: 1299, description: 'The newest flagship smartphone. You could buy one for every person in a small country.', icon: 'fas fa-mobile-alt' },
+                { id: 'laptop', name: 'High-End Laptop', price: 2500, description: 'A top-of-the-line laptop with all the bells and whistles. Buy 40 million of them!', icon: 'fas fa-laptop' },
+                { id: 'bike', name: 'Mountain Bike', price: 3000, description: 'A premium mountain bike for your adventures. Or buy 33.3 million of them.', icon: 'fas fa-bicycle' },
+                { id: 'tv', name: '85" 8K Smart TV', price: 5000, description: 'The ultimate home entertainment experience. You could buy 20 million of these!', icon: 'fas fa-tv' },
+                { id: 'concert', name: 'Front Row Concert Tickets', price: 10000, description: 'VIP tickets to see your favorite artist. Attend 10 million concerts!', icon: 'fas fa-music' }
+            ],
+            luxury: [
+                { id: 'rolex', name: 'Rolex Watch', price: 50000, description: 'A luxurious timepiece. You could buy 2 million Rolexes and still have money left.', icon: 'fas fa-clock' },
+                { id: 'tesla', name: 'Tesla Model S Plaid', price: 130000, description: 'The fastest production electric car. Buy about 769,230 of them!', icon: 'fas fa-car' },
+                { id: 'lamborghini', name: 'Lamborghini Aventador', price: 500000, description: 'A supercar that turns heads. You could buy 200,000 of these!', icon: 'fas fa-car-side' },
+                { id: 'mansion', name: 'Luxury Mansion', price: 20000000, description: 'A magnificent mansion in Beverly Hills. Buy 5,000 of them around the world.', icon: 'fas fa-home' },
+                { id: 'yacht', name: 'Superyacht', price: 50000000, description: 'A massive luxury yacht with helipad included. You could have 2,000 of these!', icon: 'fas fa-ship' },
+                { id: 'jet', name: 'Private Jet', price: 70000000, description: 'Your own Gulfstream G650. Buy a fleet of 1,428 jets!', icon: 'fas fa-plane' },
+                { id: 'island', name: 'Private Island', price: 100000000, description: 'Your own paradise in the Caribbean. Why have one when you can buy 1,000?', icon: 'fas fa-umbrella-beach' },
+                { id: 'picasso', name: 'Picasso Painting', price: 150000000, description: 'A masterpiece for your collection. Buy 666 original Picassos!', icon: 'fas fa-paint-brush' }
+            ],
+            extravagant: [
+                { id: 'team', name: 'NFL Team', price: 3000000000, description: 'Own a professional football team. You could buy 33 teams and create your own league!', icon: 'fas fa-football-ball' },
+                { id: 'rocket', name: 'Space Rocket Launch', price: 5000000000, description: 'Fund your own rocket launch to space. Do it 20 times!', icon: 'fas fa-rocket' },
+                { id: 'movie', name: 'Blockbuster Movie Production', price: 300000000, description: 'Produce your own Hollywood blockbuster. Make 333 epic films!', icon: 'fas fa-film' },
+                { id: 'skyscraper', name: 'Skyscraper in NYC', price: 3500000000, description: 'Your own skyscraper in Manhattan. Build 28 of them!', icon: 'fas fa-building' },
+                { id: 'aircraft', name: 'Boeing 747', price: 400000000, description: 'Your personal jumbo jet. Buy a fleet of 250 airplanes!', icon: 'fas fa-plane-departure' },
+                { id: 'twitter', name: 'Social Media Platform', price: 44000000000, description: 'Buy a major social media company. You could afford 2 of them!', icon: 'fab fa-twitter' },
+                { id: 'art', name: 'World\'s Most Expensive Artwork', price: 450000000, description: 'The most valuable painting ever sold. Buy 222 masterpieces!', icon: 'fas fa-palette' },
+                { id: 'spaceflight', name: 'Trip Around the Moon', price: 2000000000, description: 'Take a private spaceflight around the moon. Do it 50 times!', icon: 'fas fa-moon' }
+            ],
+            world: [
+                { id: 'hunger', name: 'End World Hunger for 1 Year', price: 30000000000, description: 'Fund initiatives to end world hunger for a year. Do it 3 times over!', icon: 'fas fa-utensils' },
+                { id: 'cleanwater', name: 'Clean Water for 100 Million People', price: 10000000000, description: 'Provide clean water access to 100 million people. Help 1 billion people!', icon: 'fas fa-tint' },
+                { id: 'deforestation', name: 'Stop Amazon Deforestation', price: 20000000000, description: 'Fund efforts to halt deforestation in the Amazon. Do it 5 times over!', icon: 'fas fa-tree' },
+                { id: 'college', name: 'College Tuition for 1 Million Students', price: 40000000000, description: 'Pay for college education for 1 million students. Help 2.5 million students!', icon: 'fas fa-graduation-cap' },
+                { id: 'mars', name: 'Mars Colony', price: 80000000000, description: 'Fund the establishment of the first human colony on Mars. And still have $20B left!', icon: 'fas fa-globe' },
+                { id: 'disease', name: 'Eradicate a Major Disease', price: 25000000000, description: 'Fund research to eradicate a major disease. Tackle 4 different diseases!', icon: 'fas fa-microscope' },
+                { id: 'housing', name: 'Housing for 1 Million Homeless', price: 20000000000, description: 'Provide housing for 1 million homeless people. Help 5 million people!', icon: 'fas fa-home' },
+                { id: 'climate', name: 'Major Climate Change Initiative', price: 50000000000, description: 'Fund a massive climate change combating initiative. Do it twice!', icon: 'fas fa-leaf' }
+            ]
+        };
+        
+        // Format currency function
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        // Update money counter function
+        function updateMoneyCounter() {
+            const moneyCounter = document.getElementById('money-counter');
+            moneyCounter.textContent = formatCurrency(balance);
+            
+            const spent = initialBalance - balance;
+            const spentPercentage = (spent / initialBalance) * 100;
+            
+            document.getElementById('spent-amount').textContent = formatCurrency(spent);
+            document.getElementById('spent-percentage').textContent = spentPercentage.toFixed(2) + '%';
+            document.getElementById('money-progress').style.width = spentPercentage + '%';
+            
+            // Check for achievements based on spending
+            checkAchievements();
+        }
+        
+        // Buy item function
+        function buyItem(itemId, category) {
+  
