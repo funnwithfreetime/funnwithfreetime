@@ -3,49 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="All-in-one PDF Tools: Convert, Compress, Edit, and Manage PDFs for Free"/>
-  <title>All-in-One PDF Tools</title>
+  <title>All PDF Tools</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
+      font-family: 'Segoe UI', sans-serif;
       background: #f9f9f9;
       color: #333;
     }
+
     header {
-      background: #4CAF50;
+      background: #4caf50;
       color: white;
+      padding: 20px;
       text-align: center;
-      padding: 1rem;
     }
-    .container {
+
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
-      padding: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      padding: 30px;
     }
-    .tool {
+
+    .card {
       background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
     }
-    .tool:hover {
-      transform: scale(1.03);
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
     }
+
+    .icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #666;
+    }
+
     footer {
+      text-align: center;
+      padding: 20px;
       background: #222;
       color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
+      font-size: 14px;
     }
+
     footer a {
       color: #aaf;
+      margin: 0 10px;
       text-decoration: none;
-      margin: 0 1rem;
     }
   </style>
 </head>
@@ -53,21 +75,72 @@
 
   <header>
     <h1>All-in-One PDF Tools</h1>
-    <p>Convert, Merge, Edit & Manage PDFs Easily</p>
+    <p>Fast, Free & Easy PDF Tool Collection</p>
   </header>
 
-  <main class="container">
-    <a class="tool" href="jpg-to-pdf.html">JPG to PDF</a>
-    <a class="tool" href="merge-pdf.html">Merge PDF</a>
-    <a class="tool" href="split-pdf.html">Split PDF</a>
-    <a class="tool" href="compress-pdf.html">Compress PDF</a>
-    <a class="tool" href="pdf-to-word.html">PDF to Word</a>
-    <a class="tool" href="pdf-to-excel.html">PDF to Excel</a>
-    <a class="tool" href="sign-pdf.html">Sign PDF</a>
-    <a class="tool" href="protect-pdf.html">Protect PDF</a>
-    <a class="tool" href="edit-pdf.html">Edit PDF</a>
-    <a class="tool" href="pdf-to-ppt.html">PDF to PowerPoint</a>
-  </main>
+  <section class="grid">
+    <div class="card" onclick="location.href='merge-pdf.html'">
+      <div class="icon">📎</div>
+      <h3>Merge PDF</h3>
+      <p>Combine PDFs in the order you want.</p>
+    </div>
+    <div class="card" onclick="location.href='split-pdf.html'">
+      <div class="icon">✂️</div>
+      <h3>Split PDF</h3>
+      <p>Separate one or more pages into new PDFs.</p>
+    </div>
+    <div class="card" onclick="location.href='compress-pdf.html'">
+      <div class="icon">🔻</div>
+      <h3>Compress PDF</h3>
+      <p>Reduce PDF file size while keeping quality.</p>
+    </div>
+    <div class="card" onclick="location.href='pdf-to-word.html'">
+      <div class="icon">📝</div>
+      <h3>PDF to Word</h3>
+      <p>Convert PDF files into DOC or DOCX.</p>
+    </div>
+    <div class="card" onclick="location.href='pdf-to-excel.html'">
+      <div class="icon">📊</div>
+      <h3>PDF to Excel</h3>
+      <p>Extract data from PDFs to Excel sheets.</p>
+    </div>
+    <div class="card" onclick="location.href='word-to-pdf.html'">
+      <div class="icon">📄</div>
+      <h3>Word to PDF</h3>
+      <p>Convert Word files to PDF easily.</p>
+    </div>
+    <div class="card" onclick="location.href='powerpoint-to-pdf.html'">
+      <div class="icon">📽️</div>
+      <h3>PowerPoint to PDF</h3>
+      <p>Convert PPT or PPTX into PDFs.</p>
+    </div>
+    <div class="card" onclick="location.href='edit-pdf.html'">
+      <div class="icon">✏️</div>
+      <h3>Edit PDF</h3>
+      <p>Edit text, images, or draw on your PDFs.</p>
+    </div>
+    <div class="card" onclick="location.href='jpg-to-pdf.html'">
+      <div class="icon">🖼️</div>
+      <h3>JPG to PDF</h3>
+      <p>Convert images into a PDF document.</p>
+    </div>
+    <div class="card" onclick="location.href='pdf-to-jpg.html'">
+      <div class="icon">📷</div>
+      <h3>PDF to JPG</h3>
+      <p>Convert PDF pages into JPG images.</p>
+    </div>
+    <div class="card" onclick="location.href='sign-pdf.html'">
+      <div class="icon">✍️</div>
+      <h3>Sign PDF</h3>
+      <p>Electronically sign or request signatures.</p>
+    </div>
+    <div class="card" onclick="location.href='protect-pdf.html'">
+      <div class="icon">🔒</div>
+      <h3>Protect PDF</h3>
+      <p>Add a password to protect your PDF.</p>
+    </div>
+    <!-- Add more tools similarly -->
+  </section>
 
   <footer>
     <p>
