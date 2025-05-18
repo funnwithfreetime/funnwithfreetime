@@ -1,404 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FunnWithFreeTime - Spend $100 Billion</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-        }
-        .balance-container {
-            background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .item-card {
-            transition: all 0.3s ease;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-        }
-        .item-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-        .buy-btn {
-            background: linear-gradient(90deg, #FF8008 0%, #FFC837 100%);
-            transition: all 0.3s ease;
-        }
-        .buy-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(255, 128, 8, 0.3);
-        }
-        .buy-btn:active {
-            transform: scale(0.95);
-        }
-        .purchase-animation {
-            animation: purchase-pulse 0.5s ease;
-        }
-        @keyframes purchase-pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        .footer {
-            background: linear-gradient(90deg, #FC466B 0%, #3F5EFB 100%);
-        }
-        .item-image {
-            height: 120px;
-            object-fit: cover;
-            background-color: #f8f9fa;
-        }
-        .category-title {
-            position: relative;
-            display: inline-block;
-        }
-        .category-title::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            bottom: -5px;
-            left: 0;
-            background: linear-gradient(90deg, #FF8008 0%, #FFC837 100%);
-            border-radius: 3px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="All-in-one PDF Tools: Convert, Compress, Edit, and Manage PDFs for Free"/>
+  <title>All-in-One PDF Tools</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .tool {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .tool:hover {
+      transform: scale(1.03);
+    }
+    footer {
+      background: #222;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    footer a {
+      color: #aaf;
+      text-decoration: none;
+      margin: 0 1rem;
+    }
+  </style>
 </head>
-<body class="p-0 m-0">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header with Balance -->
-        <div class="balance-container sticky top-0 z-10 p-4 mb-8 rounded-lg text-center">
-            <h1 class="text-3xl md:text-4xl font-bold text-white">FunnWithFreeTime</h1>
-            <div class="mt-2">
-                <p class="text-xl font-semibold text-white">Your Balance:</p>
-                <p id="balance" class="text-3xl md:text-4xl font-bold text-white">$100,000,000,000</p>
-            </div>
-        </div>
+<body>
 
-        <!-- Introduction -->
-        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h2 class="text-2xl font-bold mb-2 text-gray-800">Welcome to your spending spree!</h2>
-            <p class="text-gray-700">You have $100 billion to spend on whatever you want. Click the "Buy" button on any item to purchase it. Watch your balance update in real-time. What would you do with this much money?</p>
-        </div>
+  <header>
+    <h1>All-in-One PDF Tools</h1>
+    <p>Convert, Merge, Edit & Manage PDFs Easily</p>
+  </header>
 
-        <!-- Daily Items -->
-        <h2 class="category-title text-2xl font-bold mb-6 text-gray-800">Everyday Items</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
-            <div class="item-card">
-                <div class="item-image bg-yellow-100 flex items-center justify-center">
-                    <i class="fas fa-coffee text-5xl text-yellow-700"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Cup of Coffee</h3>
-                    <p class="text-gray-600 mb-4">Start your day right with a premium cup.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$4</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="4">Buy</button>
-                    </div>
-                </div>
-            </div>
+  <main class="container">
+    <a class="tool" href="jpg-to-pdf.html">JPG to PDF</a>
+    <a class="tool" href="merge-pdf.html">Merge PDF</a>
+    <a class="tool" href="split-pdf.html">Split PDF</a>
+    <a class="tool" href="compress-pdf.html">Compress PDF</a>
+    <a class="tool" href="pdf-to-word.html">PDF to Word</a>
+    <a class="tool" href="pdf-to-excel.html">PDF to Excel</a>
+    <a class="tool" href="sign-pdf.html">Sign PDF</a>
+    <a class="tool" href="protect-pdf.html">Protect PDF</a>
+    <a class="tool" href="edit-pdf.html">Edit PDF</a>
+    <a class="tool" href="pdf-to-ppt.html">PDF to PowerPoint</a>
+  </main>
 
-            <div class="item-card">
-                <div class="item-image bg-blue-100 flex items-center justify-center">
-                    <i class="fas fa-tshirt text-5xl text-blue-500"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Designer T-Shirt</h3>
-                    <p class="text-gray-600 mb-4">Look fashionable with this premium tee.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$50</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="50">Buy</button>
-                    </div>
-                </div>
-            </div>
+  <footer>
+    <p>
+      <a href="about.html">About Us</a> |
+      <a href="privacy.html">Privacy Policy</a> |
+      <a href="terms.html">Terms and Conditions</a>
+    </p>
+    <p>&copy; 2025 All-in-One PDF Tools</p>
+  </footer>
 
-            <div class="item-card">
-                <div class="item-image bg-gray-100 flex items-center justify-center">
-                    <i class="fas fa-mobile-alt text-5xl text-gray-700"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Latest Smartphone</h3>
-                    <p class="text-gray-600 mb-4">The newest tech with all the features.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$999</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="999">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-green-100 flex items-center justify-center">
-                    <i class="fas fa-laptop text-5xl text-green-700"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">High-End Laptop</h3>
-                    <p class="text-gray-600 mb-4">Ultimate performance for work and play.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$2,500</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="2500">Buy</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Luxury Items -->
-        <h2 class="category-title text-2xl font-bold mb-6 text-gray-800">Luxury Lifestyle</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
-            <div class="item-card">
-                <div class="item-image bg-red-100 flex items-center justify-center">
-                    <i class="fas fa-car text-5xl text-red-600"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Luxury Sports Car</h3>
-                    <p class="text-gray-600 mb-4">Feel the speed and luxury combined.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$250,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="250000">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-blue-100 flex items-center justify-center">
-                    <i class="fas fa-home text-5xl text-blue-700"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Mansion</h3>
-                    <p class="text-gray-600 mb-4">Your dream home with all amenities.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$5,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="5000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-indigo-100 flex items-center justify-center">
-                    <i class="fas fa-plane text-5xl text-indigo-600"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Private Jet</h3>
-                    <p class="text-gray-600 mb-4">Travel in style anywhere, anytime.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$30,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="30000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-purple-100 flex items-center justify-center">
-                    <i class="fas fa-gem text-5xl text-purple-700"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Diamond Jewelry</h3>
-                    <p class="text-gray-600 mb-4">Sparkle with the finest diamonds.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$1,500,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="1500000">Buy</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Extravagant & Fantasy Items -->
-        <h2 class="category-title text-2xl font-bold mb-6 text-gray-800">Extravagant Purchases</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
-            <div class="item-card">
-                <div class="item-image bg-green-100 flex items-center justify-center">
-                    <i class="fas fa-island-tropical text-5xl text-green-600"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Private Island</h3>
-                    <p class="text-gray-600 mb-4">Your own paradise away from the world.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$100,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="100000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-blue-100 flex items-center justify-center">
-                    <i class="fas fa-rocket text-5xl text-blue-800"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Space Tourism</h3>
-                    <p class="text-gray-600 mb-4">Take a trip to space and back.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$250,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="250000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-yellow-100 flex items-center justify-center">
-                    <i class="fas fa-film text-5xl text-yellow-600"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Blockbuster Movie</h3>
-                    <p class="text-gray-600 mb-4">Fund your own Hollywood blockbuster.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$200,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="200000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-red-100 flex items-center justify-center">
-                    <i class="fas fa-soccer-ball text-5xl text-red-700"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Sports Team</h3>
-                    <p class="text-gray-600 mb-4">Own a professional sports franchise.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$2,500,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="2500000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- World Changing Items -->
-        <h2 class="category-title text-2xl font-bold mb-6 text-gray-800">Change the World</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
-            <div class="item-card">
-                <div class="item-image bg-blue-100 flex items-center justify-center">
-                    <i class="fas fa-graduation-cap text-5xl text-blue-700"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Fund Education</h3>
-                    <p class="text-gray-600 mb-4">Fund education for millions of children.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$10,000,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="10000000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-green-100 flex items-center justify-center">
-                    <i class="fas fa-leaf text-5xl text-green-600"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Plant A Billion Trees</h3>
-                    <p class="text-gray-600 mb-4">Help combat climate change with trees.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$5,000,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="5000000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-red-100 flex items-center justify-center">
-                    <i class="fas fa-heartbeat text-5xl text-red-600"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Healthcare Access</h3>
-                    <p class="text-gray-600 mb-4">Provide healthcare to underserved areas.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$15,000,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="15000000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card">
-                <div class="item-image bg-yellow-100 flex items-center justify-center">
-                    <i class="fas fa-utensils text-5xl text-yellow-700"></i>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">End World Hunger</h3>
-                    <p class="text-gray-600 mb-4">Contribute to ending hunger globally.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">$25,000,000,000</span>
-                        <button class="buy-btn px-4 py-2 text-white font-semibold rounded-lg" data-price="25000000000">Buy</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Purchase History -->
-        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-            <h2 class="text-2xl font-bold mb-4 text-gray-800">Your Purchase History</h2>
-            <div id="purchase-history" class="space-y-2 text-gray-700">
-                <p class="text-gray-500 italic">No purchases yet. Start shopping!</p>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer text-center p-6 rounded-lg text-white">
-            <p class="text-lg">Made with free time and too much imagination</p>
-        </div>
-    </div>
-
-    <!-- Notification Container -->
-    <div id="notification-container" class="fixed top-4 right-4 z-50"></div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize balance and purchase history
-            let balance = 100000000000; // $100 billion
-            const purchaseHistory = [];
-            const purchaseHistoryElement = document.getElementById('purchase-history');
-            const balanceElement = document.getElementById('balance');
-            const notificationContainer = document.getElementById('notification-container');
-
-            // Format numbers with commas
-            function formatNumber(num) {
-                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
-
-            // Update balance display
-            function updateBalanceDisplay() {
-                balanceElement.textContent = '$' + formatNumber(balance);
-            }
-
-            // Update purchase history
-            function updatePurchaseHistory() {
-                purchaseHistoryElement.innerHTML = '';
-                
-                if (purchaseHistory.length === 0) {
-                    purchaseHistoryElement.innerHTML = '<p class="text-gray-500 italic">No purchases yet. Start shopping!</p>';
-                    return;
-                }
-
-                purchaseHistory.forEach((purchase, index) => {
-                    const purchaseItem = document.createElement('div');
-                    purchaseItem.className = 'flex justify-between items-center border-b pb-2';
-                    purchaseItem.innerHTML = `
-                        <span>${index + 1}. ${purchase.name}</span>
-                        <span class="font-semibold">$${formatNumber(purchase.price)}</span>
-                    `;
-                    purchaseHistoryElement.appendChild(purchaseItem);
-                });
-
-                // Add total spent
-                const totalSpent = purchaseHistory.reduce((sum, purchase) => sum + purchase.price, 0);
-                const totalElement = document.createElement('div');
-                totalElement.className = 'flex justify-between items-center pt-2 font-bold';
-                totalElement.innerHTML = `
-                    <span>Total Spent:</span>
-                    <span>$${formatNumber(totalSpent)}</span>
-                `;
-                purchaseHistoryElement.appendChild(totalElement);
-            }
-
-            // Show notification
-            function showNotification(message, type = 'success') {
-                const notification = document.createElement('div');
-                notification.className = `p-4 mb-4 rounded-lg shadow-lg transition-all duration-300 ease-in-out ${
-                    type === 'success' ? 'bg-green-500' : 'bg-red-500'
-                } text-white`;
-                notification.textContent = message;
-                
-     
+</body>
+</html>
