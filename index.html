@@ -8,60 +8,61 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f9f9f9;
+      background: #f8f8f8;
       color: #333;
     }
 
     header {
-      background: #4caf50;
+      background: #00aaff;
       color: white;
       padding: 20px;
       text-align: center;
     }
 
-    .grid {
+    .container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 20px;
       padding: 30px;
     }
 
     .card {
-      background: white;
-      padding: 20px;
+      background-color: white;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
 
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      transform: translateY(-10px);
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
     }
 
-    .icon {
-      font-size: 30px;
-      margin-bottom: 10px;
-      display: inline-block;
+    .card img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 15px;
     }
 
     .card h3 {
-      margin: 0 0 10px;
       font-size: 18px;
+      color: #333;
+      margin: 10px 0;
     }
 
     .card p {
-      font-size: 14px;
       color: #666;
+      font-size: 14px;
     }
 
     footer {
       text-align: center;
-      padding: 20px;
       background: #222;
       color: white;
-      font-size: 14px;
+      padding: 15px;
     }
 
     footer a {
@@ -69,78 +70,103 @@
       margin: 0 10px;
       text-decoration: none;
     }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .card-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
   </style>
 </head>
 <body>
 
   <header>
     <h1>All-in-One PDF Tools</h1>
-    <p>Fast, Free & Easy PDF Tool Collection</p>
+    <p>Your Ultimate PDF Solution</p>
   </header>
 
-  <section class="grid">
+  <div class="container">
+    <!-- Example Tool Cards -->
     <div class="card" onclick="location.href='merge-pdf.html'">
-      <div class="icon">📎</div>
-      <h3>Merge PDF</h3>
-      <p>Combine PDFs in the order you want.</p>
+      <div class="card-container">
+        <img src="https://img.icons8.com/ios-filled/50/000000/merge.png" alt="Merge PDF">
+        <h3>Merge PDF</h3>
+        <p>Combine multiple PDFs into one document.</p>
+      </div>
     </div>
+
     <div class="card" onclick="location.href='split-pdf.html'">
-      <div class="icon">✂️</div>
-      <h3>Split PDF</h3>
-      <p>Separate one or more pages into new PDFs.</p>
+      <div class="card-container">
+        <img src="https://img.icons8.com/ios-filled/50/000000/split.png" alt="Split PDF">
+        <h3>Split PDF</h3>
+        <p>Split a PDF into separate pages or sections.</p>
+      </div>
     </div>
+
     <div class="card" onclick="location.href='compress-pdf.html'">
-      <div class="icon">🔻</div>
-      <h3>Compress PDF</h3>
-      <p>Reduce PDF file size while keeping quality.</p>
+      <div class="card-container">
+        <img src="https://img.icons8.com/ios-filled/50/000000/compress.png" alt="Compress PDF">
+        <h3>Compress PDF</h3>
+        <p>Reduce the file size of PDFs while maintaining quality.</p>
+      </div>
     </div>
+
     <div class="card" onclick="location.href='pdf-to-word.html'">
-      <div class="icon">📝</div>
-      <h3>PDF to Word</h3>
-      <p>Convert PDF files into DOC or DOCX.</p>
+      <div class="card-container">
+        <img src="https://img.icons8.com/ios-filled/50/000000/pdf-to-word.png" alt="PDF to Word">
+        <h3>PDF to Word</h3>
+        <p>Convert PDF files into editable Word documents.</p>
+      </div>
     </div>
+
     <div class="card" onclick="location.href='pdf-to-excel.html'">
-      <div class="icon">📊</div>
-      <h3>PDF to Excel</h3>
-      <p>Extract data from PDFs to Excel sheets.</p>
+      <div class="card-container">
+        <img src="https://img.icons8.com/ios-filled/50/000000/pdf-to-excel.png" alt="PDF to Excel">
+        <h3>PDF to Excel</h3>
+        <p>Extract data from PDFs into Excel spreadsheets.</p>
+      </div>
     </div>
+
     <div class="card" onclick="location.href='word-to-pdf.html'">
-      <div class="icon">📄</div>
-      <h3>Word to PDF</h3>
-      <p>Convert Word files to PDF easily.</p>
+      <div class="card-container">
+        <img src="https://img.icons8.com/ios-filled/50/000000/word-to-pdf.png" alt="Word to PDF">
+        <h3>Word to PDF</h3>
+        <p>Convert Word documents to PDF format.</p>
+      </div>
     </div>
+
     <div class="card" onclick="location.href='powerpoint-to-pdf.html'">
-      <div class="icon">📽️</div>
-      <h3>PowerPoint to PDF</h3>
-      <p>Convert PPT or PPTX into PDFs.</p>
+      <div class="card-container">
+        <img src="https://img.icons8.com/ios-filled/50/000000/ppt-to-pdf.png" alt="PowerPoint to PDF">
+        <h3>PowerPoint to PDF</h3>
+        <p>Convert PowerPoint presentations to PDFs.</p>
+      </div>
     </div>
+
     <div class="card" onclick="location.href='edit-pdf.html'">
-      <div class="icon">✏️</div>
-      <h3>Edit PDF</h3>
-      <p>Edit text, images, or draw on your PDFs.</p>
+      <div class="card-container">
+        <img src="https://img.icons8.com/ios-filled/50/000000/edit.png" alt="Edit PDF">
+        <h3>Edit PDF</h3>
+        <p>Edit text and images in your PDFs.</p>
+      </div>
     </div>
+
     <div class="card" onclick="location.href='jpg-to-pdf.html'">
-      <div class="icon">🖼️</div>
-      <h3>JPG to PDF</h3>
-      <p>Convert images into a PDF document.</p>
+      <div class="card-container">
+        <img src="https://img.icons8.com/ios-filled/50/000000/jpg-to-pdf.png" alt="JPG to PDF">
+        <h3>JPG to PDF</h3>
+        <p>Convert your JPG images into PDFs.</p>
+      </div>
     </div>
-    <div class="card" onclick="location.href='pdf-to-jpg.html'">
-      <div class="icon">📷</div>
-      <h3>PDF to JPG</h3>
-      <p>Convert PDF pages into JPG images.</p>
-    </div>
-    <div class="card" onclick="location.href='sign-pdf.html'">
-      <div class="icon">✍️</div>
-      <h3>Sign PDF</h3>
-      <p>Electronically sign or request signatures.</p>
-    </div>
-    <div class="card" onclick="location.href='protect-pdf.html'">
-      <div class="icon">🔒</div>
-      <h3>Protect PDF</h3>
-      <p>Add a password to protect your PDF.</p>
-    </div>
-    <!-- Add more tools similarly -->
-  </section>
+
+    <!-- Add other cards similarly -->
+
+  </div>
 
   <footer>
     <p>
